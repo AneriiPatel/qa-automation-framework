@@ -11,17 +11,19 @@ A mini end-to-end UI automation framework built with **Playwright + JavaScript**
 - JavaScript (Node.js)
 - Git/GitHub
 
-## Project Structure
+## 📂 Project Structure
+
+```
 qa-automation/
-├── pages/ # Page Object Model files (selectors + reusable actions)
-├── tests/ # Test spec files (actual test scenarios)
-├── data/ # Test data (credentials, inputs)
-├── utils/ # Reusable helper functions
+│
+├── pages/        # Page Object Model files (selectors + reusable actions)
+├── tests/        # Test spec files (actual test scenarios)
+├── data/         # Test data (credentials, inputs)
+├── utils/        # Reusable helper functions
 ├── package.json
 └── playwright.config.js
+```
 
-
----
 
 ## 🧠 Framework Design Principles
 
