@@ -13,7 +13,6 @@ A mini end-to-end UI automation framework built with **Playwright + JavaScript**
 
 ## Project Structure
 qa-automation/
-│
 ├── pages/ # Page Object Model files (selectors + reusable actions)
 ├── tests/ # Test spec files (actual test scenarios)
 ├── data/ # Test data (credentials, inputs)
