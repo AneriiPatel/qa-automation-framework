@@ -10,20 +10,34 @@ test.describe('Auth Flow Regression Suite', () => {
     await loginPage.open();
   });
 
-  test('Valid user can login and logout', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const securePage = new SecurePage(page);
+  test('@smoke Valid user can login and logout', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const securePage = new SecurePage(page);
 
-    await loginPage.login(users.valid.username, users.valid.password);
+  await loginPage.open();
 
-    expect(await securePage.isLoaded()).toBe(true);
-    await expect(page.locator('#flash')).toContainText('You logged into a secure area!');
+  // Start listening BEFORE triggering login
+  const authResponsePromise = page.waitForResponse(res =>
+    res.url().includes('/authenticate')
+  );
 
-    await securePage.logout();
-    await expect(page.locator('#flash')).toContainText('You logged out of the secure area!');
-  });
+  await loginPage.login(users.valid.username, users.valid.password);
 
-  test('Invalid password shows error message', async ({ page }) => {
+  // Now assert backend response (303 redirect is expected here)
+  const authResp = await authResponsePromise;
+  expect(authResp.status()).toBe(303);
+
+  // UI validations
+  expect(await securePage.isLoaded()).toBe(true);
+  await expect(page.locator('#flash')).toContainText('You logged into a secure area!');
+
+  // Logout
+  await securePage.logout();
+  await expect(page.locator('#flash')).toContainText('You logged out of the secure area!');
+});
+
+
+  test('@regression Invalid password shows error message', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.login(users.invalid.username, users.invalid.password);
